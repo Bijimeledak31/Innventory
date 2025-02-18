@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Manajemen Gudang</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="#" class="logo">SisGudang</a>
+            <button id="theme-toggle" class="btn btn-secondary" onclick="toggleTheme()">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#dashboard" class="active">Dashboard</a></li>
+            <li><a href="#items">Item</a></li>
+            <li><a href="#locations">Lokasi</a></li>
+            <li><a href="#inventory">Inventory</a></li>
+            <li class="dropdown">
+                <a href="#transactions" class="dropdown-toggle">Transaksi <i class="fas fa-chevron-down"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#incoming">Barang Masuk</a></li>
+                    <li><a href="#outgoing">Barang Keluar</a></li>
+                </ul>
+            </li>
+            <li><a href="#report">Report</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="page-section active">
+            <div class="dashboard-grid animate-fade-in">
+                <div class="stats-card">
+                    <h3>Total Item</h3>
+                    <div class="stats-value">1,234</div>
+                    <p><i class="fas fa-boxes"></i> Di semua gudang</p>
+                </div>
+                <div class="stats-card">
+                    <h3>Stok Rendah</h3>
+                    <div class="stats-value">28</div>
+                    <p><i class="fas fa-exclamation-triangle"></i> Perlu pengisian</p>
+                </div>
+                <div class="stats-card">
+                    <h3>Transaksi Hari Ini</h3>
+                    <div class="stats-value">45</div>
+                    <p><i class="fas fa-clock"></i> Total transaksi</p>
+                </div>
+                <div class="stats-card">
+                    <h3>Total Lokasi</h3>
+                    <div class="stats-value">12</div>
+                    <p><i class="fas fa-map-marker-alt"></i> Aktif</p>
+                </div>
+            </div>
+
+            <section class="card">
+                <h2>Analisis Stok</h2>
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <h3>Pergerakan Stok</h3>
+                        <canvas id="stockMovementChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Kategori Produk</h3>
+                        <canvas id="productCategoryChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Status Stok per Gudang</h3>
+                        <canvas id="warehouseStockChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Items Section -->
+        <section id="items" class="page-section">
+            <div class="card">
+                <div class="card-header">
+                    <div id="productModal" class="modal">
+                        <!-- Konten modal Anda -->
+                    </div>
+                    <h2>Daftar Produk</h2>
+                    <button class="btn btn-primary" onclick="showAddForm()">
+                        <i class="fas fa-plus"></i> Tambah Produk
+                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Barcode</th>
+                                <th>Nama Produk</th>
+                                <th>Kategori</th>
+                                <th>Stok</th>
+                                <th>Satuan</th>
+                                <th>Harga Beli</th>
+                                <th>Total Harga</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productTableBody">
+                        
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        </section>
+
+        <!-- Locations Section -->
+        <section id="locations" class="page-section">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Lokasi Penyimpanan</h2>
+                    <button class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Lokasi</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Kode</th>
+                                <th>Nama Lokasi</th>
+                                <th>Kapasitas</th>
+                                <th>Terisi</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>LOC001</td>
+                                <td>Gudang Utara</td>
+                                <td>1000</td>
+                                <td>750</td>
+                                <td><span class="badge badge-success">Aktif</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Inventory Section -->
+        <section id="inventory" class="page-section">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Status Inventory</h2>
+                    <div class="header-actions">
+                        <button class="btn btn-secondary"><i class="fas fa-file-export"></i> Export</button>
+                        <button class="btn btn-primary"><i class="fas fa-sync"></i> Update Stok</button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Lokasi</th>
+                                <th>Stok</th>
+                                <th>Minimal</th>
+                                <th>Status</th>
+                                <th>Last Update</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Laptop Asus</td>
+                                <td>Gudang Utara</td>
+                                <td>50</td>
+                                <td>10</td>
+                                <td><span class="badge badge-success">Normal</span></td>
+                                <td>2024-02-08</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Transactions Section -->
+        <section id="transactions" class="page-section">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Transaksi</h2>
+                    <div class="header-actions">
+                        <button class="btn btn-success"><i class="fas fa-download"></i> Barang Masuk</button>
+                        <button class="btn btn-warning"><i class="fas fa-upload"></i> Barang Keluar</button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>No Transaksi</th>
+                                <th>Tanggal</th>
+                                <th>Jenis</th>
+                                <th>Item</th>
+                                <th>Qty</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>TRX001</td>
+                                <td>2024-02-08</td>
+                                <td><span class="badge badge-success">Masuk</span></td>
+                                <td>Laptop Asus</td>
+                                <td>10</td>
+                                <td><span class="badge badge-info">Selesai</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-secondary"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-primary"><i class="fas fa-print"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Report Section -->
+        <section id="report" class="page-section">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Laporan</h2>
+                </div>
+                <div class="reports-grid">
+                    <div class="report-card">
+                        <i class="fas fa-boxes fa-2x"></i>
+                        <h3>Laporan Stok</h3>
+                        <p>Laporan detail stok per item</p>
+                        <button class="btn btn-primary">Generate</button>
+                    </div>
+                    <div class="report-card">
+                        <i class="fas fa-exchange-alt fa-2x"></i>
+                        <h3>Laporan Transaksi</h3>
+                        <p>Riwayat transaksi masuk/keluar</p>
+                        <button class="btn btn-primary">Generate</button>
+                    </div>
+                    <div class="report-card">
+                        <i class="fas fa-chart-bar fa-2x"></i>
+                        <h3>Analisis Inventory</h3>
+                        <p>Analisis pergerakan stok</p>
+                        <button class="btn btn-primary">Generate</button>
+                    </div>
+                    <div class="report-card">
+                        <i class="fas fa-exclamation-triangle fa-2x"></i>
+                        <h3>Stok Minimum</h3>
+                        <p>Daftar item dengan stok minimum</p>
+                        <button class="btn btn-primary">Generate</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Sistem Manajemen Gudang. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
